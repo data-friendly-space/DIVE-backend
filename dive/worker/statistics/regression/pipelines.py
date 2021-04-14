@@ -162,7 +162,8 @@ def parse_confidence_intervals(model_result):
     conf_int = model_result.conf_int().transpose().to_dict()
 
     parsed_conf_int = {}
-    for field, d in conf_int.iteritems():
+    #for field, d in conf_int.iteritems():
+    for field, d in conf_int.items():
         parsed_conf_int[field] = [ d[0], d[1] ]
     return parsed_conf_int
 
@@ -255,15 +256,18 @@ def restructure_field_properties_dict(constants, regression_field_properties, to
     categorical_field_values = {}
     properties_by_field_dict = {}
 
-    for prop_type, field_names_and_values in regression_field_properties.iteritems():
-        for field_name, value in field_names_and_values.iteritems():
+    #for prop_type, field_names_and_values in regression_field_properties.iteritems():
+    for prop_type, field_names_and_values in regression_field_properties.items():
+        #for field_name, value in field_names_and_values.iteritems():
+        for field_name, value in field_names_and_values.items():
             if field_name in properties_by_field_dict:
                 properties_by_field_dict[field_name][prop_type] = value
             else:
                 properties_by_field_dict[field_name] = { prop_type: value }
 
     properties_by_field_collection = []
-    for field_name, properties in properties_by_field_dict.iteritems():
+    #for field_name, properties in properties_by_field_dict.iteritems():
+    for field_name, properties in properties_by_field_dict.items():
         new_doc = {
             'field': field_name
         }
@@ -341,7 +345,8 @@ def format_results(model_results, dependent_variable, independent_variables, con
 
     for model_result, considered_independent_variables in zip(model_results, considered_independent_variables_per_model):
         # Move categorical field values to higher level
-        for field_name, field_values in model_result['categorical_field_values'].iteritems():
+        #for field_name, field_values in model_result['categorical_field_values'].iteritems():
+        for field_name, field_values in model_result['categorical_field_values'].items():
             regression_fields_dict[field_name] = field_values
 
         # Test regression
@@ -375,7 +380,8 @@ def format_results(model_results, dependent_variable, independent_variables, con
 
     # Convert regression fields dict into collection
     regression_fields_collection = []
-    for field, values in regression_fields_dict.iteritems():
+    #for field, values in regression_fields_dict.iteritems():
+    for field, values in regression_fields_dict.items():
         regression_fields_collection.append({
             'name': field,
             'values': values

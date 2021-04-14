@@ -228,7 +228,8 @@ def get_multigroup_agg_data(df, args, id_fields=[], precomputed={}, config={}, d
 
     agg_df_as_dict = agg_df.to_dict()
 
-    for k, v in agg_df_as_dict.iteritems():
+    #for k, v in agg_df_as_dict.iteritems():
+    for k, v in agg_df_as_dict.items():
         # Structure: {highest_level_value: {secondary_level_value: aggregated_value}}
         highest_level_value = k[0]
         secondary_level_value = k[1]
@@ -266,7 +267,8 @@ def get_multigroup_agg_data(df, args, id_fields=[], precomputed={}, config={}, d
     results_as_data_array.append(header_row)
     results_as_data_array_with_interval.append( [group_a_field_label] + secondary_field_values )
 
-    for k, v in results_grouped_by_highest_level_value.iteritems():
+    #for k, v in results_grouped_by_highest_level_value.iteritems():
+    for k, v in results_grouped_by_highest_level_value.items():
         data_array_element = [ k ]
         data_array_element_with_interval = [ k ]
         for secondary_field_value in secondary_field_values:
@@ -343,7 +345,8 @@ def get_multigroup_count_data(df, args, id_fields=[], precomputed={}, config={},
 
     results_grouped_by_highest_level_value = {}
 
-    for k, v in grouped_df.to_dict().iteritems():
+    #for k, v in grouped_df.to_dict().iteritems():
+    for k, v in grouped_df.to_dict().items():
         # Structure: {(highest_level_value, secondary_level_value): value}
         highest_level_value = k[0]
         secondary_level_value = k[1]
@@ -361,7 +364,8 @@ def get_multigroup_count_data(df, args, id_fields=[], precomputed={}, config={},
     header_row = [ group_a_field_name ] + secondary_field_values
     results_as_data_array.append(header_row)
 
-    for k, v in results_grouped_by_highest_level_value.iteritems():
+    #for k, v in results_grouped_by_highest_level_value.iteritems():
+    for k, v in results_grouped_by_highest_level_value.items():
         data_array_element = [ k ]
         for secondary_field_value in secondary_field_values:
             data_array_element.append( v.get(secondary_field_value) )

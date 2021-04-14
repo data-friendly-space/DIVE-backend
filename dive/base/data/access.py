@@ -41,9 +41,18 @@ def get_dataset_sample(dataset_id, project_id, start=0, inc=100):
     end = start + inc  # Upper bound excluded
     df = get_data(dataset_id=dataset_id, project_id=project_id)
 
-    sample = map(list, df.iloc[start:end].values)
+    #sample = map(list, df.iloc[start:end].values)
+    sample = df.iloc[start:end].values.tolist()
+
+    #print('get_dataset_sample')
+
+    #print('df', df)
+    #print('df.iloc[start:end].values', df.iloc[start:end].values)
+
+    #print('sample', sample)
 
     result = db_access.get_dataset_properties(project_id, dataset_id)
+    #result['sample'] = sample
     result['sample'] = sample
     return result
 
@@ -55,6 +64,7 @@ def get_data(project_id=None, dataset_id=None, nrows=None, field_properties=[]):
         return df
 
     dataset = db_access.get_dataset(project_id, dataset_id)
+    print(dataset)
     dialect = dataset['dialect']
     encoding = dataset.get('encoding', 'utf-8')
 
@@ -76,6 +86,13 @@ def get_data(project_id=None, dataset_id=None, nrows=None, field_properties=[]):
 
     if not field_properties:
         field_properties = db_access.get_field_properties(project_id, dataset_id)
+
+    # dive-la debug
+    print('accessor:', accessor)
+    import os
+    print('folder contents', os.listdir("/usr/src/app/uploads/1/"))
+
+    print('now pd read table')
 
     df = pd.read_table(
         accessor,

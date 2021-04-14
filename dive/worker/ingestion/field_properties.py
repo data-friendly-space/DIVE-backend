@@ -85,7 +85,7 @@ def calculate_field_stats(field_type, general_type, field_values, logging=False)
     percentiles = [(i * .5) / 10 for i in range(1, 20)]
 
     df = pd.DataFrame(field_values)
-    stats = df.describe(percentiles=percentiles).to_dict().values()[0]
+    stats = list(df.describe(percentiles=percentiles).to_dict().values())[0]
     stats['total_count'] = df.shape[0]
     return stats
 
@@ -224,7 +224,8 @@ def get_field_distribution_viz_data(field_name, field_values, field_type, genera
 
 def get_normality(field_name, field_values, field_type, general_type, scale):
     normality = None
-    if general_type is 'q':
+    #if general_type is 'q':
+    if general_type == 'q':
         try:
             d = field_values.astype(np.float)
             normality_test_result = sc_stats.normaltest(d)
@@ -334,6 +335,10 @@ def detect_hierarchical_relationships(df, field_properties, MAX_UNIQUE_VALUES_TH
     hierarchical_relationships = []
     for field_a, field_b in permutations(field_properties, 2):
         if field_a['is_unique'] or (field_a['general_type'] != GDT.C.value) or (field_b['general_type'] != GDT.C.value):
+            continue
+
+        # Added to prevent TypeError: 'NoneType' object is not iterable
+        if field_a['unique_values'] == None:
             continue
 
         field_b_unique_corresponding_values = []

@@ -1,6 +1,6 @@
 import re
 import pandas as pd
-from csvkit import sniffer
+#from csvkit import sniffer
 from random import sample as random_sample
 import dateutil.parser as dparser
 from collections import defaultdict
@@ -80,7 +80,8 @@ def get_type_scores_from_field_name(field_name, num_samples=100):
         operation = d['operation']
         mappings = d['mappings']
 
-        for datatype, strings in mappings.iteritems():
+        #for datatype, strings in mappings.iteritems():
+        for datatype, strings in mappings.items():
             for s in strings:
                 if operation(field_name, s):
                     type_scores[datatype] += weight * num_samples
@@ -111,19 +112,27 @@ def calculate_field_type(field_name, field_values, field_position, num_fields, n
     instances.
     '''
     # # Convert to str and drop NAs for type detection
-    field_values = field_values.dropna().apply(unicode)
+    #field_values = field_values.dropna().apply(unicode)
+    field_values = field_values.dropna().apply(str)
+
+    print('field_values', field_values)
 
     num_samples = min(len(field_values), num_samples)
-    field_sample = random_sample(field_values, num_samples) if random else field_values[:num_samples]
+    #field_sample = random_sample(field_values, num_samples) if random else field_values[:num_samples]
+    field_sample = random_sample(list(field_values), num_samples) if random else field_values[:num_samples]
+
+    print('field_sample', field_sample)
 
     type_scores_from_name = get_type_scores_from_field_name(field_name, num_samples=num_samples)
     type_scores_from_values = get_type_scores_from_field_values(field_sample)
 
     # Combine type score dictionaries
     final_type_scores = defaultdict(int)
-    for t, score in type_scores_from_name.iteritems():
+    #for t, score in type_scores_from_name.iteritems():
+    for t, score in type_scores_from_name.items():
         final_type_scores[t] += score
-    for t, score in type_scores_from_values.iteritems():
+    #for t, score in type_scores_from_values.iteritems():
+    for t, score in type_scores_from_values.items():
         final_type_scores[t] += score
 
     # Normalize field scores
@@ -131,7 +140,8 @@ def calculate_field_type(field_name, field_values, field_position, num_fields, n
     normalized_type_scores = {}
     total_score = sum(final_type_scores.values())
     if total_score:
-        for type_name, score in final_type_scores.iteritems():
+        #for type_name, score in final_type_scores.iteritems():
+        for type_name, score in final_type_scores.items():
             score_tuples.append((type_name, score))
             normalized_type_scores[type_name] = float(score) / total_score
 
@@ -175,6 +185,8 @@ def detect_if_list(v):
     delimiters = ['|', ',', ';', '$']
 
     LIST_LEN_THRESHOLD = 2
+    # TODO: LA-DIVE Version csvkit sniffer is not working
+    '''
     dialect = sniffer.sniff_dialect(v)
     if dialect:
         delim = dialect.delimiter
@@ -182,6 +194,7 @@ def detect_if_list(v):
         filtered_vals = [ x for x in split_vals if (x and (x not in delimiters)) ]
         if filtered_vals >= 2:
             return filtered_vals
+    '''
     return False
 
 

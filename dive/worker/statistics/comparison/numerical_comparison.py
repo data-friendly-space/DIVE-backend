@@ -196,7 +196,8 @@ def run_comparison(df, fields, indep, dep, test):
     for dep_field_name in dep:
         dep_data[dep_field_name] = df[dep_field_name]
 
-    if test is 'ttest':
+    #if test is 'ttest':
+    if test == 'ttest':
         return ttest(df, fields, indep, dep)
 
 def ttest(df, fields, indep, dep):

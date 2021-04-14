@@ -1,5 +1,6 @@
 import numpy as np
 from itertools import combinations
+import pandas as pd
 
 from dive.base.db import db_access
 from dive.worker.core import celery, task_app
@@ -16,9 +17,15 @@ import logging
 logger = logging.getLogger(__name__)
 
 def get_list_of_unique_dicts(li):
-    return list(np.unique(np.array(li)))
 
-def enumerate_viz_specs(project_id, dataset_id, selected_fields, recommendation_types=[], spec_limit=None, expanded_spec_limit=20):
+    #return list(np.unique(np.array(li)))
+    # Python 3 fix from https://stackoverflow.com/questions/11092511/python-list-of-unique-dictionaries
+    #return list(np.unique(np.array(li).astype(str)))
+    #return [dict(s) for s in set(frozenset(d.items()) for d in li)]
+    return pd.DataFrame(li).drop_duplicates().to_dict('r')
+
+#def enumerate_viz_specs(project_id, dataset_id, selected_fields, recommendation_types=[], spec_limit=None, expanded_spec_limit=20):
+def enumerate_viz_specs(project_id, dataset_id, selected_fields, recommendation_types=[], spec_limit=None, expanded_spec_limit=30):
     '''
     TODO Move key filtering to the db query
     TODO Incorporate 0D and 1D data returns
@@ -59,7 +66,7 @@ def enumerate_viz_specs(project_id, dataset_id, selected_fields, recommendation_
             specs.extend([dict(s, recommendation_type='exact') for s in baseline_viz_specs ])
 
     # Deduplicate
-    specs = get_list_of_unique_dicts(specs)
+    #specs = get_list_of_unique_dicts(specs)
 
     # Limit Number of specs
     if spec_limit:
@@ -262,7 +269,7 @@ def get_expanded_viz_specs(c_fields, q_fields, t_fields, c_fields_not_selected, 
     n_q = len(q_fields)
     n_t = len(t_fields)
 
-    print 'EXPANDED', n_c, n_q, n_t
+    print('EXPANDED', n_c, n_q, n_t)
 
     # One selected C
     for c_field_1 in c_fields:

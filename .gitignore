@@ -1,3 +1,5 @@
+**/.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -13,6 +15,6 @@ uploads/
 migrations/
 preloaded/
 
-dive/tasks/statistics/comparison.py
+#dive/tasks/statistics/comparison.py
 
 erl_crash.dump

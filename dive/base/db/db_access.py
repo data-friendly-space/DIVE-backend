@@ -75,11 +75,13 @@ def get_dataset(project_id, dataset_id):
             return None
 
     # TODO Decide between raising error and aborting with 404
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         logger.error(e)
         return None
 
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         logger.error(e)
         raise e
 
@@ -133,9 +135,11 @@ def add_preloaded_dataset_to_project(project_id, dataset_id):
             return row_to_dict(preloaded_dataset)
         else:
             return None
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 def remove_preloaded_dataset_from_project(project_id, dataset_id):
@@ -148,9 +152,11 @@ def remove_preloaded_dataset_from_project(project_id, dataset_id):
             return row_to_dict(preloaded_dataset)
         else:
             return None
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 def get_project_preloaded_datasets(project_id):
@@ -168,9 +174,11 @@ def get_dataset_properties(project_id, dataset_id):
             return row_to_dict(dataset_properties, custom_fields=['n_rows', 'n_cols'])
         else:
             return None
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 # TODO Do an upsert?
@@ -391,9 +399,11 @@ def delete_spec(project_id, exported_spec_id):
     # TODO Accept multiple IDs
     try:
         spec = Spec.query.filter_by(project_id=project_id, id=exported_spec_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(spec)
     db.session.commit()
@@ -445,9 +455,11 @@ def get_public_exported_spec(exported_spec_id, spec_type):
                 exported_spec = { 'type': ContentType.TEXT.value }
             return row_to_dict(exported_spec, custom_fields=['type', 'spec'])
 
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 def get_exported_spec(project_id, exported_spec_id):
@@ -457,9 +469,11 @@ def get_exported_spec(project_id, exported_spec_id):
             project_id=project_id
         ).one()
         return row_to_dict(spec)
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 def get_exported_spec_by_fields(project_id, spec_id, **kwargs):
@@ -470,9 +484,11 @@ def get_exported_spec_by_fields(project_id, spec_id, **kwargs):
             **kwargs
         ).one()
         return row_to_dict(spec)
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
 def get_exported_specs(project_id):
@@ -539,9 +555,11 @@ def get_regression_by_id(regression_id, project_id, **kwargs):
 def get_regression_from_spec(project_id, spec, **kwargs):
     try:
         regression = Regression.query.filter_by(project_id=project_id, spec=spec, **kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         logger.error(e)
         return row_to_dict(Regression.query.filter_by(project_id=project_id, spec=spec, **kwargs).all()[0])
     return row_to_dict(regression)
@@ -561,9 +579,11 @@ def insert_regression(project_id, spec, data, **kwargs):
 def delete_regression(project_id, regression_id, **kwargs):
     try:
         regression = Regression.query.filter_by(project_id=project_id, id=regression_id, **kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(regression)
     db.session.commit()
@@ -602,9 +622,11 @@ def insert_comparison(project_id, spec, data, **kwargs):
 def delete_comparison(project_id, comparison_id, **kwargs):
     try:
         comparison = Comparison.query.filter_by(project_id=project_id, id=comparison_id, **kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(comparison)
     db.session.commit()
@@ -644,9 +666,11 @@ def insert_correlation(project_id, spec, data, **kwargs):
 def delete_correlation(project_id, correlation_id, **kwargs):
     try:
         correlation = Correlation.query.filter_by(project_id=project_id, id=correlation_id, **kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(correlation)
     db.session.commit()
@@ -685,9 +709,11 @@ def insert_aggregation(project_id, spec, data, **kwargs):
 def delete_aggregation(project_id, aggregation_id, **kwargs):
     try:
         aggregation = Aggregation.query.filter_by(project_id=project_id, id=aggregation_id, **kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(aggregation)
     db.session.commit()
@@ -702,9 +728,11 @@ def get_exported_regression_by_id(project_id, exported_regression_id):
     try:
         exported_regression = Exported_Regression.query.filter_by(id=exported_regression_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_regression)
 
@@ -712,9 +740,11 @@ def get_exported_regression_by_regression_id(project_id, regression_id):
     try:
         exported_regression = Exported_Regression.query.filter_by(regression_id=regression_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_regression)
 
@@ -740,9 +770,11 @@ def insert_exported_regression(project_id, regression_id, data, conditionals, co
 def delete_exported_regression(project_id, exported_regression_id):
     try:
         exported_regression = Exported_Regression.query.filter_by(project_id=project_id, id=exported_regression_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     db.session.delete(exported_regression)
@@ -784,9 +816,11 @@ def get_interaction_term_properties(interaction_term_ids):
 def delete_interaction_term(interaction_term_id):
     try:
         interaction_term = Interaction_Term.query.filter_by(id=interaction_term_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     db.session.delete(interaction_term)
@@ -802,9 +836,11 @@ def get_exported_correlation_by_id(project_id, exported_correlation_id):
     try:
         exported_correlation = Exported_Correlation.query.filter_by(id=exported_correlation_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_correlation)
 
@@ -812,9 +848,11 @@ def get_exported_correlation_by_correlation_id(project_id, correlation_id):
     try:
         exported_correlation = Exported_Correlation.query.filter_by(correlation_id=correlation_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_correlation)
 
@@ -840,9 +878,11 @@ def insert_exported_correlation(project_id, correlation_id, data, conditionals, 
 def delete_exported_correlation(project_id, exported_correlation_id):
     try:
         exported_correlation = Exported_Correlation.query.filter_by(project_id=project_id, id=exported_correlation_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     db.session.delete(exported_correlation)
@@ -862,9 +902,11 @@ def get_exported_aggregation_by_aggregation_id(project_id, aggregation_id):
     try:
         exported_aggregation = Exported_Aggregation.query.filter_by(aggregation_id=aggregation_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_aggregation)    
 
@@ -890,9 +932,11 @@ def insert_exported_aggregation(project_id, aggregation_id, data, conditionals, 
 def delete_exported_aggregation(project_id, exported_aggregation_id):
     try:
         exported_aggregation = Exported_Aggregation.query.filter_by(project_id=project_id, id=exported_aggregation_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     db.session.delete(exported_aggregation)
@@ -912,9 +956,11 @@ def get_exported_comparison_by_comparison_id(project_id, comparison_id):
     try:
         exported_comparison = Exported_Comparison.query.filter_by(comparison_id=comparison_id,
             project_id=project_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     return row_to_dict(exported_comparison)     
 
@@ -940,9 +986,11 @@ def insert_exported_comparison(project_id, comparison_id, data, conditionals, co
 def delete_exported_comparison(project_id, exported_comparison_id):
     try:
         exported_comparison = Exported_Comparison.query.filter_by(project_id=project_id, id=exported_comparison_id).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     db.session.delete(exported_comparison)
@@ -962,10 +1010,12 @@ def get_public_document(document_id):
     try:
         document = Document.query.filter_by(id=document_id).one()
         return row_to_dict(document)
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         logger.error(e)
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         logger.error(e)
         raise e
 
@@ -973,10 +1023,12 @@ def get_document(project_id, document_id):
     try:
         document = Document.query.filter_by(project_id=project_id, id=document_id).one()
         return row_to_dict(document)
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         logger.error(e)
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         logger.error(e)
         raise e
 

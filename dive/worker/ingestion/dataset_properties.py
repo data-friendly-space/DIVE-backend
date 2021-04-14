@@ -18,6 +18,8 @@ def compute_dataset_properties(dataset_id, project_id, path=None):
     ''' Compute and return dictionary containing whole
     import pandas as pd-dataset properties '''
 
+    print('compute_dataset_properties', 'path', path)
+
     if not path:
         dataset = db_access.get_dataset(project_id, dataset_id)
         path = dataset['path']

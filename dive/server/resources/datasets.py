@@ -187,6 +187,12 @@ class Dataset(Resource):
             'preloaded': dataset.get('preloaded'),
             'details': sample
         }
+
+        #print('Dataset(Resource)', response)
+        
+        #print('Sample', sample)
+
+        #print('Dataset(Resource) json', jsonify(response))
         return jsonify(response)
 
     @login_required

@@ -81,7 +81,8 @@ def get_statistical_properties(data, gp, ts):
             v = data.get('count')
 
 
-        for test_name, test_fn in univariate_tests.iteritems():
+        #for test_name, test_fn in univariate_tests.iteritems():
+        for test_name, test_fn in univariate_tests.items():
             test_value = None
             try:
                 test_value = test_fn(v)
@@ -95,7 +96,8 @@ def get_statistical_properties(data, gp, ts):
                 'type': test_name,
                 'score': test_value
             })
-        for test_name, test_fn in bivariate_tests.iteritems():
+        #for test_name, test_fn in bivariate_tests.iteritems():
+        for test_name, test_fn in bivariate_tests.items():
             stat_docs.append({
                 'type': test_name,
                 'score': None
@@ -106,7 +108,8 @@ def get_statistical_properties(data, gp, ts):
         stat_docs = []
         v1 = data.get('field_a')
         v2 = data.get('field_b')
-        for test_name, test_fn in univariate_tests.iteritems():
+        #for test_name, test_fn in univariate_tests.iteritems():
+        for test_name, test_fn in univariate_tests.items():
             test_value = None
             try:
                 test_value = test_fn(v2)
@@ -115,7 +118,8 @@ def get_statistical_properties(data, gp, ts):
             except:
                 logger.debug('Failed scoring for test %s, gp %s, ts %s', test_name, gp, ts)
 
-        for test_name, test_fn in bivariate_tests.iteritems():
+        #for test_name, test_fn in bivariate_tests.iteritems():
+        for test_name, test_fn in bivariate_tests.items():
             test_value = None
             try:
                 test_value = test_fn(v1, v2)

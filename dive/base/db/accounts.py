@@ -101,9 +101,11 @@ def create_team(team_name):
 def confirm_user(**kwargs):
     try:
         user = User.query.filter_by(**kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     user.confirmed = True
@@ -115,9 +117,11 @@ def confirm_user(**kwargs):
 def get_user(**kwargs):
     try:
         user = User.query.filter_by(**kwargs).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
 
     return user
@@ -181,8 +185,12 @@ def register_user(username, email, password, user_id=None, confirmed=True, anony
 
 def change_user_password_by_email(email, password):
     try: user = User.query.filter_by(email=email).one()
-    except NoResultFound, e: return None
-    except MultipleResultsFound, e: raise e
+    #except NoResultFound, e: 
+    except NoResultFound as e:
+        return None
+    #except MultipleResultsFound, e: 
+    except MultipleResultsFound as e:
+        raise e
 
     user.password = password
     user.confirmed_on = datetime.datetime.now()
@@ -193,9 +201,11 @@ def change_user_password_by_email(email, password):
 def delete_user(user_id, password, name=None):
     try:
         user = User.query.filter_by(id=user_id, password=password).one()
-    except NoResultFound, e:
+    #except NoResultFound, e:
+    except NoResultFound as e:
         return None
-    except MultipleResultsFound, e:
+    #except MultipleResultsFound, e:
+    except MultipleResultsFound as e:
         raise e
     db.session.delete(user)
     db.session.commit()

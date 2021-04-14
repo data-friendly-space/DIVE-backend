@@ -18,7 +18,7 @@ registry.enable('application/x-pjson')
 
 class BaseConfig(object):
     # General
-    SITE_URL = 'localhost:3009'
+    SITE_URL = 'localhost::8081'
     SITE_TITLE = 'dive'
     SECRET_KEY = 'dive'
     PREFERRED_URL_SCHEME = 'http'
@@ -44,14 +44,18 @@ class BaseConfig(object):
     MAIL_PORT = 2525
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
-    MAIL_DEFAULT_SENDER = 'dive@media.mit.edu'
+    MAIL_DEFAULT_SENDER = 'aneesha.bakharia@gmail.com'
     MAIL_SUPPRESS_SEND = False
     MAIL_DEBUG = False
 
     # Data
-    MAX_CONTENT_LENGTH = sys.maxint
-    ROW_LIMIT = sys.maxint
-    COLUMN_LIMIT = sys.maxint
+    #MAX_CONTENT_LENGTH = sys.maxint
+    #ROW_LIMIT = sys.maxint
+    #COLUMN_LIMIT = sys.maxint
+
+    MAX_CONTENT_LENGTH = sys.maxsize
+    ROW_LIMIT = sys.maxsize
+    COLUMN_LIMIT = sys.maxsize
 
     # Parameters
     ANALYSIS_DATA_SIZE_CUTOFF=10000
@@ -68,7 +72,8 @@ class BaseConfig(object):
     PRELOADED_PATH = base_dir_path('preloaded')
 
     # DB
-    DATABASE_URI = 'admin:password@localhost/dive'
+    #DATABASE_URI = 'divedb_user:divedb_pass@localhost/divedb_prod'
+    DATABASE_URI = 'divedb_user:divedb_pass@db:5432/divedb_prod'
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://%s?client_encoding=utf8' % DATABASE_URI
     SQLALCHEMY_POOL_SIZE=20
     SQLALCHEMY_MAX_OVERFLOW=100
@@ -80,7 +85,8 @@ class BaseConfig(object):
     CELERY_ACCEPT_CONTENT = [ 'pjson' ]
     CELERY_TASK_SERIALIZER = 'pjson'
     CELERY_RESULT_SERIALIZER = 'pjson'
-    CELERY_BROKER_URL = 'amqp://admin:password@localhost/dive'
+    #CELERY_BROKER_URL = 'amqp://admin:mypass@localhost/dive'
+    CELERY_BROKER_URL = 'amqp://admin:mypass@rabbit//'
     CELERY_RESULT_BACKEND = 'db+postgresql://%s' % DATABASE_URI
 
     CELERY_IMPORTS = []

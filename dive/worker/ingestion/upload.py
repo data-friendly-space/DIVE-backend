@@ -11,10 +11,13 @@ import csv
 import xlrd
 import json
 import codecs
+'''
 try:
     import cStringIO as StringIO
 except:
     import StringIO
+'''
+from io import StringIO
 import boto3
 import chardet
 import pandas as pd
@@ -31,6 +34,10 @@ from dive.base.data.in_memory_data import InMemoryData as IMD
 
 import logging
 logger = logging.getLogger(__name__)
+
+from pathlib import Path
+import sys
+# added to create folder before file is saved
 
 
 def save_fileobj_to_s3(fileobj, project_id, file_name):
@@ -63,6 +70,7 @@ def upload_file(project_id, file_obj):
     file_name = foo.csv
     file_title = foo
     '''
+    print('Upload file called')
     file_name = secure_filename(file_obj.filename)
     file_title, file_type = file_name.rsplit('.', 1)
 
@@ -104,9 +112,19 @@ def get_dialect(file_obj, sample_size=1024*1024):
         sample = file_obj.readline()
     file_obj.seek(0)
 
-    sniffer = csv.Sniffer()
-    dialect = sniffer.sniff(sample)
+    print(sample)
 
+    print('about to sniff for dialect')
+
+    sniffer = csv.Sniffer()
+    #dialect = sniffer.sniff(sample)
+    # Changed due to bytes error in python 3
+    dialect = sniffer.sniff(sample.decode('utf-8'))
+
+    #---
+    #dialect = csv.Sniffer().sniff(csvfile.read(1024))
+    #---
+    
     result = {
         'delimiter': dialect.delimiter,
         'doublequote': dialect.doublequote,
@@ -114,6 +132,7 @@ def get_dialect(file_obj, sample_size=1024*1024):
         'lineterminator': dialect.lineterminator,
         'quotechar': dialect.quotechar,
     }
+    print(result)
     return result
 
 
@@ -201,9 +220,25 @@ def save_flat_table(project_id, file_obj, file_title, file_name, file_type, path
 
     if current_app.config['STORAGE_TYPE'] == 'file':
         try:
+            print('Saving file to this path', path)
+            print(file_obj)
+
+            last_path_char = path.rfind('/')
+            if last_path_char != -1:
+                dir_path = path[0:(last_path_char+1)]
+                print("dir_path",dir_path)
+                p = Path(dir_path)
+                p.mkdir(exist_ok=True)
+
             file_obj.save(path)
+            import os
+            print('folder contentes', os.listdir("/usr/src/app/uploads/1/"))
         except IOError:
+            print('File save error in save_flat_table', path)
             logger.error('Error saving file with path %s', path, exc_info=True)
+        except: # catch *all* exceptions
+            e = sys.exc_info()[0]
+            print(str(e))
     elif current_app.config['STORAGE_TYPE'] == 's3':
         url = save_fileobj_to_s3(file_obj, project_id, file_name)
     return file_doc

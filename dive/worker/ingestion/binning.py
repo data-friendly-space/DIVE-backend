@@ -22,7 +22,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 def get_bin_decimals(v, max_sample=100, default=3):
-    v = v.astype(float, raise_on_error=False)
+    #v = v.astype(float, raise_on_error=False)
+    try:
+        v = v.astype(float)
+    except:
+        v = v.values.astype(float)
+
     if len(v) <= max_sample:
         sample = v
     else:
@@ -76,7 +81,11 @@ def format_bin_edges_list(bin_edges_list, precision, general_type=GDT.Q.value):
 
 
 def get_num_bins(v, procedure='freedman', default_num_bins=10):
-    v = v.astype(float, raise_on_error=False)
+    #v = v.astype(float, raise_on_error=False)
+    try:
+        v = v.astype(float)
+    except:
+        v = v.values.astype(float)
     n = len(v)
     min_v = min(v)
     max_v = max(v)
@@ -134,7 +143,11 @@ def get_bin_edges(v, num_bins, general_type=GDT.Q.value, num_decimals=2):
             max_v = max(v)
 
     if general_type == GDT.Q.value:
-        v = v.astype(float, raise_on_error=False)
+        #v = v.astype(float, raise_on_error=False)
+        try:
+            v = v.astype(float)
+        except:
+            v = v.values.astype(float)
         min_v = min(v)
         max_v = max(v)
 

@@ -3,11 +3,12 @@ import locale
 import decimal
 import datetime
 import dateutil.parser as dparser
-from dateparser import DATE_FORMATS, is_date
+from dive.worker.ingestion.dateparser import DATE_FORMATS, is_date
 
 from dive.base.constants import DataType, DataTypeWeights
 
-string_types = (str, unicode)
+#string_types = (str, unicode)
+string_types = (str)
 
 class CellType(object):
     ''' A cell type maintains information about the format

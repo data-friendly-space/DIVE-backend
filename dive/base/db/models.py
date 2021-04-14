@@ -7,9 +7,12 @@ from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from dive.base.constants import Role, User_Status, ModelName
 from dive.base.core import db
 
+import enum
+
 
 def make_uuid():
-    return unicode(uuid.uuid4())
+    #return unicode(uuid.uuid4())
+    return str(uuid.uuid4())
 
 
 project_preloaded_dataset_association_table = Table('project_preloaded_dataset_association',
@@ -138,6 +141,10 @@ class Dataset(db.Model):
                         onupdate=datetime.utcnow)
 
 
+class StructureEnum(enum.Enum):
+    wide = 1
+    longer = 2
+
 class Dataset_Properties(db.Model):
     __tablename__ = ModelName.DATASET_PROPERTIES.value
     id = Column(Integer, primary_key=True)
@@ -146,7 +153,7 @@ class Dataset_Properties(db.Model):
     field_names = Column(JSONB)
     field_types = Column(JSONB)
     field_accessors = Column(JSONB)
-    structure = Enum(['wide', 'long'])
+    structure = Enum(StructureEnum) #Enum(['wide', 'long'])
     is_time_series = Column(Boolean())
 
     dataset_id = Column(Integer, ForeignKey('dataset.id',
@@ -594,4 +601,5 @@ class User(db.Model):
         return self.active
 
     def get_id(self):
-        return unicode(self.id)
+        #return unicode(self.id)
+        return str(self.id)

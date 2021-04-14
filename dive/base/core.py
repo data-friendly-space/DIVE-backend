@@ -1,6 +1,8 @@
 import os
 import sys
-import pandas.json as pjson
+#import pandas.json as pjson
+import pandas.io.json as pjson
+
 
 import boto3
 import psycopg2.extras
@@ -11,13 +13,14 @@ from flask_cors import CORS
 from flask_compress import Compress
 from flask_mail import Mail
 
-from raven.contrib.flask import Sentry
+#from raven.contrib.flask import Sentry
 from werkzeug.local import LocalProxy
 
 from dive.base.serialization import pjson_dumps, pjson_loads
 
 # Setup logging config
-from setup_logging import setup_logging
+#from setup_logging import setup_logging
+from dive.base.setup_logging import setup_logging
 setup_logging()
 
 psycopg2.extras.register_default_json(
@@ -32,7 +35,7 @@ class CustomSQLAlchemy(SQLAlchemy):
 
 
 # Initialize app-based objects
-sentry = Sentry()
+#sentry = Sentry()
 db = CustomSQLAlchemy()
 login_manager = LoginManager()
 cors = CORS()
@@ -54,7 +57,7 @@ def create_app(**kwargs):
         app.config.from_object('config.TestingConfig')
     elif mode == 'PRODUCTION':
         app.config.from_object('config.ProductionConfig')
-        sentry.init_app(app)
+        #sentry.init_app(app)
 
     if app.config.get('COMPRESS', True):
         compress.init_app(app)
@@ -90,3 +93,5 @@ def ensure_directories(app):
     if not os.path.isdir(app.config['STORAGE_PATH']):
         app.logger.info("Creating Upload directory")
         os.mkdir(app.config['STORAGE_PATH'])
+
+

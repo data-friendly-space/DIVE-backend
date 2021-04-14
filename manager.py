@@ -161,7 +161,7 @@ def ensure_dummy_project():
     logger.info('Ensuring dummy project for preloaded datasets')
     try:
         dummy_project = Project.query.filter_by(id=-1).one()
-    except NoResultFound, e:
+    except NoResultFound as e:
         p = Project(
             id=-1,
             title='Dummy Project',

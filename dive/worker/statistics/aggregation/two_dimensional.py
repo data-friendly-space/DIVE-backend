@@ -135,22 +135,28 @@ def create_contingency_table_with_dependent_variable(df, variables, dep_variable
         row = parse_variable(index, row_variable, df, bin_data=bin_data.get(row_variable['name']))
         if dep_var_dict.get(row):
             if dep_var_dict[row].get(col):
-                dep_var_dict[row][col].append(df.get_value(index, dep_variable_name))
+                #dep_var_dict[row][col].append(df.get_value(index, dep_variable_name))
+                dep_var_dict[row][col].append(df._get_value(index, dep_variable_name))
                 if weight_variable_name != 'UNIFORM':
-                    weight_dict[row][col].append(df.get_value(index, weight_variable_name))
+                    #weight_dict[row][col].append(df.get_value(index, weight_variable_name))
+                    weight_dict[row][col].append(df._get_value(index, weight_variable_name))
 
             else:
-                dep_var_dict[row][col] = [df.get_value(index, dep_variable_name)]
+                #dep_var_dict[row][col] = [df.get_value(index, dep_variable_name)]
+                dep_var_dict[row][col] = [df._get_value(index, dep_variable_name)]
                 weight_dict[row][col] = None
                 if weight_variable_name != 'UNIFORM':
-                    weight_dict[row][col] = [df.get_value(index, weight_variable_name)]
+                    #weight_dict[row][col] = [df.get_value(index, weight_variable_name)]
+                    weight_dict[row][col] = [df._get_value(index, weight_variable_name)]
         else:
             dep_var_dict[row] = {}
-            dep_var_dict[row][col] = [df.get_value(index, dep_variable_name)]
+            #dep_var_dict[row][col] = [df.get_value(index, dep_variable_name)]
+            dep_var_dict[row][col] = [df._get_value(index, dep_variable_name)]
             weight_dict[row] = {}
             weight_dict[row][col] = None
             if weight_variable_name != 'UNIFORM':
-                weight_dict[row][col] = [df.get_value(index, weight_variable_name)]
+                #weight_dict[row][col] = [df.get_value(index, weight_variable_name)]
+                weight_dict[row][col] = [df._get_value(index, weight_variable_name)]
 
     if dep_variable_scale in [ Scale.ORDINAL.value, Scale.CONTINUOUS.value ]:
         for row in unique_indep_values[1]:

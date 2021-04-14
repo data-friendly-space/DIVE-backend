@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 COOKIE_DURATION = timedelta(days=365)
 
 def set_cookies(response, cookie_dict, expires=None, domain=current_app.config['COOKIE_DOMAIN']):
-    for (k, v) in cookie_dict.iteritems():
+    #for (k, v) in cookie_dict.iteritems():
+    for (k, v) in cookie_dict.items():
         response.set_cookie(k, str(v), expires=expires, domain=domain, secure=True)
     return response
 

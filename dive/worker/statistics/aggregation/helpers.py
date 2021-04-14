@@ -48,6 +48,8 @@ def find_bin(target, binningEdges, binningNames, num_bins):
     def searchIndex(nums, target, length, index):
         length = int(length)
         mid = length/2
+        # added due to TypeError: list indices must be integers or slices, not float
+        mid = int(mid)
         if length == 1:
             if target <= nums[0]:
                 return index
@@ -75,12 +77,14 @@ def parse_variable(index, variable, df, bin_data={}):
     name = variable['name']
 
     if scale in [  Scale.ORDINAL.value, Scale.NOMINAL.value ] :
-        return df.get_value(index, name)
+        #return df.get_value(index, name)
+        return df._get_value(index, name)
     elif scale in [ Scale.CONTINUOUS.value ] :
         binning_edges = bin_data['binning_edges']
         bin_names = bin_data['bin_names']
         num_bins = bin_data['num_bins']
-        return find_bin(df.get_value(index, name), binning_edges, bin_names, num_bins)
+        #return find_bin(df.get_value(index, name), binning_edges, bin_names, num_bins)
+        return find_bin(df._get_value(index, name), binning_edges, bin_names, num_bins)
 
 
 def find_unique_values_and_max_frequency(list):
