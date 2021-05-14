@@ -3,7 +3,7 @@ import logging
 from dive.base.core import create_app
 
 def create_api(app):
-    from flask.ext.restful import Api
+    from flask_restful import Api
     from dive.server.api import add_resources
 
     api = Api(catch_all_404s=True)

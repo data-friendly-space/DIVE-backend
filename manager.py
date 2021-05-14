@@ -5,9 +5,9 @@ import os
 from os import listdir, curdir
 from os.path import isfile, join, isdir
 import boto3
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.migrate import Migrate, MigrateCommand
-from flask.ext.script import Manager
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 from sqlalchemy.orm.exc import NoResultFound
 
 from dive.base.core import create_app
